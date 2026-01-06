@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>AirB2Matic.com - Automazione per Host Airbnb a Firenze</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+
+        /* ------------------------------
+       VARIABILI
+    ------------------------------ */
+    :root {
+        --primary: #ff5a5f;
+        --secondary: #008489;
+        --dark: #222;
+        --light: #f7f7f7;
+        --white: #fff;
+        --text: #333;
+    }
+
+    /* ------------------------------
+       RESET
+    ------------------------------ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--light);
+        color: var(--text);
+        line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+
+    .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    section { padding: 60px 0; }
+    h1, h2, h3 { color: var(--dark); font-weight: 700; }
+
+    /* ------------------------------
+       HEADER
+    ------------------------------ */
+    header {
+        position: sticky;
+        top: 0;
+        background: rgba(255,255,255,0.96);
+        backdrop-filter: blur(6px);
+        border-bottom: 1px solid #ddd;
+        z-index: 999;
+    }
+
+    .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 800;
+        font-size: 1.1rem;
+        color: var(--primary);
+    }
+
+    .logo-mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: .9rem;
+        font-weight: 800;
+    }
+
+    nav ul {
+        display: flex;
+        gap: 20px;
+        list-style: none;
+    }
+
+    nav li a { font-weight: 500; }
+    nav li a:hover { color: var(--primary); }
+
+    .nav-contact {
+        font-size: .85rem;
+        color: var(--secondary);
+        font-weight: 600;
+    }
+
+    /* Hamburger */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        width: 28px;
+        cursor: pointer;
+    }
+    .hamburger span {
+        height: 3px;
+        background: var(--dark);
+        border-radius: 3px;
+    }
+
+    .mobile-menu {
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+        padding: 10px 0 16px;
+    }
+    .mobile-menu.show { display: flex; }
+
+    /* ------------------------------
+       HERO
+    ------------------------------ */
+    .hero {
+        background: linear-gradient(135deg, #fff, #fbecec);
+        padding: 60px 0 40px;
+    }
+
+    .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 40px;
+        align-items: center;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: #fff5f5;
+        color: var(--primary);
+        font-size: .8rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .hero-subtitle { margin-bottom: 16px; }
+
+    .hero-list { list-style: none; margin: 12px 0 20px; }
+    .hero-list li {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+
+    .btn {
+        display: inline-block;
+        background: var(--primary);
+        color: #fff;
+        padding: 12px 22px;
+        border-radius: 4px;
+        font-weight: 600;
+        margin-right: 10px;
+    }
+    .btn-outline {
+        border: 2px solid var(--primary);
+        color: var(--primary);
+        background: transparent;
+    }
+     .img-luci { background-image: url("images/clima.jpg"); 
+    }
+    /* ------------------------------
+       SERVIZI
+    ------------------------------ */
+    .section-label {
+        font-size: .8rem;
+        text-transform: uppercase;
+        color: var(--secondary);
+        margin-bottom: 6px;
+        font-weight: 700;
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 20px;
+    }
+
+    .service-card {
+        background: #fff;
+        padding: 16px;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+    }
+
+    .service-image {
+    height: 150px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none !important;
+}
+
+.service-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.service-image img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+    .img-checkin { background: url("images/checkin.jpg"); }
+    .img-clima { background: url("images/clima.jpg"); }
+    .img-luci { background-image: url("images/luci.jpg"); }
+    .img-accessi { background: url("images/multiproprieta.jpg"); }
+    .img-video { background: url("images/videoid.jpg"); }
+    .img-consulenza { background: url("images/consulenza.jpg"); }
+  
+    .service-tagline { font-size: .85rem; color: #666; margin-bottom: 10px; }
+
+    /* ------------------------------
+       DETTAGLI
+    ------------------------------ */
+    .detail-section {
+        background: #fff;
+        padding: 22px;
+        border-radius: 14px;
+        margin-top: 20px;
+        box-shadow: 0 10px 24px rgba(0,0,0,0.05);
+    }
+
+    .detail-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 20px;
+    }
+
+    .detail-list { list-style: none; }
+    .detail-list li::before { content: "• "; color: var(--primary); }
+
+    .detail-image-placeholder {
+        height: 220px;
+        border-radius: 12px;
+        background-size: cover;
+        background-position: center;
+    }
+
+    /* ------------------------------
+       STEPS
+    ------------------------------ */
+    .steps {
+        display: grid;
+        grid-template-columns: repeat(3,1fr);
+        gap: 18px;
+    }
+
+    .step-card {
+        background: #fff;
+        padding: 16px;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.03);
+    }
+
+    .step-number {
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 8px;
+        font-weight: 700;
+    }
+
+    /* ------------------------------
+       CONTATTI
+    ------------------------------ */
+    .contact {
+        background: var(--dark);
+        color: #eee;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 30px;
+    }
+
+    .contact-card {
+        background: #2c2c2c;
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    /* ------------------------------
+       FOOTER
+    ------------------------------ */
+    footer {
+        background: #111;
+        color: #bbb;
+        text-align: center;
+        padding: 18px 0;
+        font-size: .8rem;
+    }
+
+    /* ------------------------------
+       RESPONSIVE
+    ------------------------------ */
+    @media(max-width:900px){
+        .hero-grid,
+        .detail-grid,
+        .contact-grid { grid-template-columns:1fr; }
+    }
+    @media(max-width:800px){
+        nav ul { display:none; }
+        .hamburger { display:flex; }
+        .services-grid { grid-template-columns:repeat(2,1fr); }
+        .steps { grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:620px){
+        .services-grid { grid-template-columns:1fr; }
+        .steps { grid-template-columns:1fr; }
+    }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="container nav">
+        <a href="#top" class="logo">
+            <div class="logo-mark">A2</div>
+            <div>AirB2Matic<span style="color:#555;">.com</span></div>
+        </a>
+
+        <nav>
+            <ul>
+                <li><a href="#servizi">Servizi</a></li>
+                <li><a href="#dettagli">Soluzioni</a></li>
+                <li><a href="#come-funziona">Come funziona</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contatti">Contatti</a></li>
+            </ul>
+        </nav>
+
+        <div class="nav-contact">Tel / WhatsApp: +39 348 1520200</div>
+
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+
+    <div class="container mobile-menu" id="mobile-menu">
+        <a href="#servizi">Servizi</a>
+        <a href="#dettagli">Soluzioni</a>
+        <a href="#come-funziona">Come funziona</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contatti">Contatti</a>
+    </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+    <div class="container hero-grid">
+        <div>
+            <div class="hero-badge"><span>✔</span> AirB2Matic servizi di automazione per Host</div>
+
+            <h1>Automatizza il tuo Airbnb a Firenze e riprenditi il tuo tempo.</h1>
+
+            <p class="hero-subtitle">
+                Con AirB2Matic gestire un appartamento turistico diventa finalmente semplice:
+                niente più corse per il check‑in, niente luci lasciate accese, niente condizionatori accesi per ore.
+            </p>
+
+            <ul class="hero-list">
+                <li><span>•</span> Self check‑in H24 senza chiavi né appuntamenti.</li>
+                <li><span>•</span> Controllo remoto dell'aria condizionata e delle luci con una App.</li>
+                <li><span>•</span> Accessi smart e videocamere nei punti consentiti.</li>
+            </ul>
+
+            <a href="#contatti" class="btn">Richiedi una consulenza gratuita</a>
+            <a href="#servizi" class="btn btn-outline">Scopri le soluzioni</a>
+        </div>
+    </div>
+</section>
+
+<!-- SERVIZI -->
+<section id="servizi">
+    <div class="container">
+        <div class="section-label">Servizi principali</div>
+        <h2>Le soluzioni AirB2Matic per il tuo Airbnb</h2>
+
+        <div class="services-grid">
+
+  <article class="service-card">
+                  <div class="service-image">
+                  <img src="images/checkin.jpg" alt="Self check-in automatico"></div>
+                  <h3>Self check‑in automatico</h3>
+                  <p class="service-tagline">Zero chiavi, zero stress, zero attese da parte dell'host.</p>
+                  <p>Gli ospiti accedono all'alloggio tramite App e password con orario flessibile.</p> 
+              </article>          
+
+            <article class="service-card">
+                <div class="service-image">
+                <img src="images/clima.jpg" alt="Self check-in automatico"></div>
+                <h3>Controllo remoto dei condizionatori</h3>
+                <p class="service-tagline">Comfort per gli ospiti, risparmio per te.</p>
+                <p>Accendi o spegni riscaldamento e aria condizionata dal tuo smartphone.</p>
+            </article>
+
+            <article class="service-card">
+                <div class="service-image">
+                <img src="images/luci.jpg" alt="Self check-in automatico"></div>
+                <h3>Illuminazione intelligente</h3>
+                <p class="service-tagline">Atmosfera perfetta con un tap.</p>
+                <p>Scenari “Benvenuto”, “Notte”, “Pulizie” o “Risparmio”.</p>
+            </article>
+
+            <article class="service-card">
+                <div class="service-image">
+                  <img src="images/multiproprieta.jpg" alt="Self check-in automatico"></div>
+                <h3>Gestione accessi multi‑alloggio</h3>
+                <p class="service-tagline">Tutto sotto controllo.</p>
+                <p>Un’unica app per porte, codici, permessi e notifiche.</p>
+            </article>
+
+            <article class="service-card">
+                <div class="service-image">
+                  <img src="images/videoid.jpg" alt="Self check-in automatico"></div>
+                <h3>Video‑identificazione ospiti</h3>
+                <p class="service-tagline">Più sicurezza, zero complicazioni.</p>
+                <p>Notifiche in tempo reale quando arriva un ospite con identificazione e registrazione decumenti.</p>
+            </article>
+
+            <article class="service-card">
+                <div class="service-image">
+                  <img src="images/consulenza.jpg" alt="Self check-in automatico"></div>
+                <h3>Consulenza chiavi in mano</h3>
+                <p class="service-tagline">Pensiamo a tutto noi.</p>
+                <p>Installazione, configurazione e supporto continuo.</p>
+            </article>
+
+        </div>
+    </div>
+</section>
+
+<!-- DETTAGLI -->
+<section id="dettagli">
+    <div class="container">
+        <div class="section-label">Dettaglio soluzioni</div>
+        <h2>Come funzionano i servizi AirB2Matic</h2>
+
+        <div class="detail-section">
+            <div class="detail-grid">
+                <div>
+                    <h3>Self check‑in</h3>
+                    <ul class="detail-list">
+                        <li>Gli ospiti scaricano una App per IPhone e Android</li>    
+                        <li>Accedono all'alloggio tramite smartphone e password dedicata</li>                       
+                        <li>Inviano copia dei documenti tramite videocamera certificata</li>
+                        <li>Il propietario ha 24 ore di tempo per l'dentificazione</li>
+                        <li>Un Log degli accessi si crea in automatico</li>
+                        <li>Vengono istallati dei dispositivi all'interno dell'alloggio.</li>
+                        <li>Apertura del portone e della porta dell'appartamento</li>                     
+                        <li>Non serve l'autorizzazione del condominio.</li>  
+                    </ul>
+                </div>
+                <div class="detail-image-placeholder img-checkin"></div>
+            </div>
+        </div>
+
+        <div class="detail-section" id="dettaglio-clima">
+    <div class="detail-grid">
+        <div>
+            <h3>Controllo remoto di riscaldamento e condizionamento</h3>
+            <p>
+                Accogli l’ospite in un ambiente confortevole e riduci gli sprechi quando l’alloggio è vuoto.
+                Tutto dal tuo smartphone.
+            </p>
+            <ul class="detail-list">
+                <li>Termostati smart e controller per condizionatori.</li>
+                <li>Programmi “eco” automatici.</li>
+                <li>Limiti di temperatura per evitare consumi eccessivi.</li>
+                <li>Monitoraggio dei consumi.</li>
+            </ul>
+        </div>
+
+        <div class="detail-image-placeholder img-clima"></div>
+    </div>
+</div>
+
+<div class="detail-section" id="dettaglio-luci">
+    <div class="detail-grid">
+        <div>
+            <h3>Illuminazione smart e scenari preconfigurati</h3>
+            <p>
+                Con le luci smart puoi creare scenari come “Benvenuto”, “Notte”, “Pulizie” o “Risparmio”.
+            </p>
+            <ul class="detail-list">
+                <li>Luci dimmerabili e regolabili da app</li>
+                <li>Scene personalizzate</li>
+                <li>Controllo remoto</li>
+                <li>Compatibile con la maggior parte delle lampade</li>
+            </ul>
+        </div>
+        <div class="detail-image-placeholder img-luci"></div>
+    </div>
+</div>
+<div class="detail-section" id="dettaglio-accessi">
+    <div class="detail-grid">
+        <div>
+            <h3>Gestione accessi multi‑alloggio</h3>
+            <p>
+                Se gestisci più appartamenti, hai bisogno di una visione unica su chi entra e quando.
+            </p>
+            <ul class="detail-list">
+                <li>Pannello unico per tutti gli appartamenti</li>
+                <li>Gestione codici e permessi</li>
+                <li>Notifiche in tempo reale</li>
+                <li>Ideale per property manager</li>
+            </ul>
+        </div>
+        <div class="detail-image-placeholder img-accessi"></div>
+    </div>
+</div>
+<div class="detail-section" id="dettaglio-video">
+    <div class="detail-grid">
+        <div>
+            <h3>Identificazione ospiti tramite videocamera</h3>
+            <p>
+                Una videocamera nei punti consentiti ti avvisa quando arriva un ospite.
+            </p>
+            <ul class="detail-list">
+                <li>Notifiche in tempo reale</li>
+                <li>Accesso sicuro alle registrazioni</li>
+                <li>Riduce conflitti con vicini</li>
+                <li>Consulenza su privacy e posizionamento</li>
+            </ul>
+        </div>
+        <div class="detail-image-placeholder img-video"></div>
+    </div>
+</div>
+<div class="detail-section" id="dettaglio-consulenza">
+    <div class="detail-grid">
+        <div>
+            <h3>Consulenza e installazione chiavi in mano</h3>
+            <p>
+                Non devi essere un esperto: ci pensiamo noi.
+            </p>
+            <ul class="detail-list">
+                <li>Sopralluogo in presenza o da remoto</li>
+                <li>Proposta personalizzata</li>
+                <li>Installazione completa</li>
+                <li>Supporto post‑vendita</li>
+            </ul>
+        </div>
+        <div class="detail-image-placeholder img-consulenza"></div>
+    </div>
+</div>
+
+</section>
+
+<!-- COME FUNZIONA -->
+<section id="come-funziona">
+    <div class="container">
+        <div class="section-label">Come funziona</div>
+        <h2>Dal primo contatto alla recensione a 5 stelle</h2>
+
+        <div class="steps">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Analisi</h3>
+                <p>Valutiamo il tuo appartamento e le tue esigenze.</p>
+<div class="step-number">2</div>
+                <h3>Proposta Soluzioni</h3>
+                <p>Ti proponiamo delle soluzioni.</p>
+<div class="step-number">3</div>
+                <h3>Dimostrazione e preventivo</h3>
+                <p>Ti invitiamo ad una demo dedicata.</p>
+<div class="step-number">4</div>
+                <h3>Rapida esecuzione dei progetti</h3>
+                <p>Si procede ad evadere l'ordine.</p>
+</section>
+<!-- FAQ -->
+<section id="faq">
+    <div class="container">
+        <div class="section-label">FAQ</div>
+        <h2>Domande frequenti degli Host</h2>
+        <p>Una raccolta delle domande che ci fanno più spesso gli Host di Firenze.</p>
+
+        <div class="detail-section">
+            <h3>Quanto tempo serve per installare tutto?</h3>
+            <p>
+                Di solito in 1–2 ore installiamo serratura smart, tastierino, sensori e app.
+                Per soluzioni più complete ci vuole un po’ di più, ma sempre in giornata.
+            </p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Serve il Wi‑Fi nell’appartamento?</h3>
+            <p>
+                Sì, una buona connessione aiuta tutto a funzionare al meglio.
+                Se non ce l’hai, possiamo consigliarti soluzioni alternative.
+            </p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Gli ospiti capiscono come funziona il self check‑in?</h3>
+            <p>
+                Assolutamente sì.
+                Ricevono un messaggio chiaro con il codice e le istruzioni.
+                È più semplice che usare una chiave.
+            </p>
+        </div>
+
+        <div class="detail-section">
+            <h3>E se l’ospite non riesce ad aprire la porta?</h3>
+            <p>
+                Puoi aprire tu da remoto con un tap.
+                E se preferisci, possiamo configurare un backup manuale.
+            </p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Le videocamere sono legali?</h3>
+            <p>
+                Sì, se posizionate nei punti consentiti (es. ingresso condominiale).
+                Ti guidiamo noi per essere sempre in regola.
+            </p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Quanto costa?</h3>
+            <p>
+                Dipende da cosa ti serve: self check‑in, clima, luci, videocamere…
+                I nostri prezzi sono molto competitivi e ti prepariamo un preventivo chiaro e senza sorprese.
+            </p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Posso gestire tutto da iPhone o Android?</h3>
+            <p>
+                Certo.
+                La nostra app funziona su entrambi e puoi controllare tutto anche quando sei lontano.
+            </p>
+        </div>
+
+        <div class="detail-section">
+            <h3>Offrite assistenza dopo l’installazione?</h3>
+            <p>
+                Sempre.
+                Se hai dubbi o vuoi aggiungere nuove funzioni, siamo a un messaggio di distanza.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- CONTATTI -->
+<section id="contatti" class="contact">
+    <div class="container contact-grid">
+        <div>
+            <div class="section-label">Contatti</div>
+            <h2>Parliamo del tuo Airbnb a Firenze</h2>
+            <p class="contact-info">
+                <strong>AirB2Matic.com</strong> è il partner ideale per gli Host che vogliono automatizzare
+                il proprio appartamento senza complicazioni.
+            </p>
+
+            <div class="contact-info">
+                <p><strong>Telefono / WhatsApp:</strong> +39 348 1520200</p>
+                <p><strong>Email:</strong> <a href="mailto:dcassin@gmail.com">dcassin@gmail.com</a></p>
+            </div>
+
+            <p class="contact-highlight">
+                Inviaci un messaggio WhatsApp con il link del tuo annuncio Airbnb
+                e una breve descrizione dell’appartamento:
+                ti rispondiamo con una prima idea di automatizzazione e un range di prezzi.
+            </p>
+        </div>
+
+        <div class="contact-card">
+            <h3 style="margin-bottom:8px;color:#fff;">Richiedi una chiamata</h3>
+            <p>
+                Puoi contattarci direttamente via WhatsApp o email.
+                Per aiutarti al meglio, indicaci:
+            </p>
+
+            <ul class="detail-list" style="margin-top:6px;">
+                <li>Numero di appartamenti che gestisci.</li>
+                <li>Problemi principali che vuoi risolvere.</li>
+                <li>Eventuali dispositivi smart già installati.</li>
+            </ul>
+
+            <div class="contact-links">
+                <p><strong>Telefono / WhatsApp:</strong> <a href="tel:+393481520200">+39 348 1520200</a></p>
+                <p><strong>Email:</strong> <a href="mailto:dcassin@gmail.com">dcassin@gmail.com</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    AirB2Matic.com – Servizi di automazione per Host Airbnb a Firenze.
+    Contatto: Tel / WhatsApp <a href="tel:+393481520200">+39 348 1520200</a> –
+    Email <a href="mailto:dcassin@gmail.com">dcassin@gmail.com</a>
+</footer>
+
+<script>
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const header = document.querySelector('header');
+
+    hamburger.addEventListener('click', () => {
+        mobileMenu.classList.toggle('show');
+        header.classList.toggle('nav-open');
+    });
+
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('show');
+            header.classList.remove('nav-open');
+        });
+    });
+</script>
+
+</body>
+</html>
